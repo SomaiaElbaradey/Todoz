@@ -12,10 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "joi": "^17.3.0",
     "joi-objectid": "^3.0.1",
-    "mongoose": "^5.11.13",
-    "router": "^1.3.5"
+    "joi-password-complexity": "^5.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.13"
   }
 }

@@ -1,13 +1,25 @@
+const mailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
 const mongoose = require("mongoose");
-const Joi = require("@hapi/joi");
+const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
-const passwordComplexity = require("joi-password-complexity");
-const jwt = require("jsonwebtoken");
-// Includes
-const { userJwt } = require("../startup/config.js").jwtKeys();
 
 // Schema
 const schema = new mongoose.Schema({
+    mail: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        lowerCase: true,
+        minlength: 6,
+        maxlength: 64,
+        match: mailRegExp,
+    },
+    firstName: {
+        type: String,
+        minlength: 3,
+        maxlength: 15
+    },
     userName: {
         type: String,
         required: true,
@@ -29,43 +41,30 @@ const schema = new mongoose.Schema({
     },
 });
 
-// JWT generation method
-schema.methods.generateToken = function (expiry) {
-    return jwt.sign(
-        {
-            _id: this._id,
-            type: "user"
-        }, userJwt, { expiresIn: expiry }
-    );
-};
-module.exports.user = mongoose.model("users", schema);
+module.exports.users = mongoose.model('User', schema);
 
-const complexityOptions = {
-    min: 8,
-    max: 30,
-    lowerCase: 1,
-    upperCase: 1,
-    numeric: 1,
-    requirementCount: 2,
-};
+function validateUser(user) {
+    const schema = Joi.object({
+        mail: Joi.string().email().required().trim().lowercase().min(6).max(64),
+        userName: Joi.string().required().trim().min(7).max(64),
+        firstName: Joi.string().min(3).max(15),
+        password: Joi.string()
+            .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z]).{8,}$')),
+        age: Joi.number().min(13),
+    });
+    
+    return schema.validate(user);
+}
 
-// Set Validation Schema
-const validationSchema = Joi.object().keys({
-    userName: Joi.string().required().trim().min(7).max(64),
-    password: passwordComplexity(complexityOptions),
-    age: Joi.number()
-        .min(13)
-});
-module.exports.validateAdmin = function (admin) {
-    return validationSchema.validate(admin);
-};
+module.exports.validateUser = validateUser;
 
-////****************** User Login Validation  ******************
+// Login Validation  
 // Set Login Schema
 const loginSchema = Joi.object().keys({
-    userName: Joi.string().email().required().trim().lowercase().min(6).max(64),
+    mail: Joi.string().email().required().trim().lowercase().min(6).max(64),
     password: Joi.string().required().min(8).max(30),
 });
+
 module.exports.validateUserLogin = function (userRequest) {
     return loginSchema.validate(userRequest);
 };

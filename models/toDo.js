@@ -1,30 +1,30 @@
 const mongoose = require("mongoose");
-const Joi = require("@hapi/joi");
-Joi.objectId = require("joi-objectid")(Joi);
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi); 
 
 // Schema
 const schema = new mongoose.Schema({
     _user: {
-        type: mongoose.objectId,
+        type: mongoose.ObjectId,
         required: true,
         ref: "users"
     },
     groupTitle: {
         type: String,
-        required: "true",
+        required: true,
         minlength: 10,
         maxlength: 20,
     },
 });
 
-module.exports.toDo = mongoose.model("toDos", schema);
+module.exports.todos = mongoose.model('Todo', schema);
 
 // Set Validation Schema
 const validationSchema = Joi.object().keys({
-    userName: Joi.string().required().trim().min(7).max(64),
-    age: Joi.number()
-        .min(13)
+    groupTitle: Joi.string().required().min(10).max(20),
+    _user: Joi.objectId().required(),
 });
-module.exports.validateToDo = function (toDo) {
-    return validationSchema.validate(toDo);
+
+module.exports.validateTodo = function (todo) {
+    return validationSchema.validate(todo);
 };

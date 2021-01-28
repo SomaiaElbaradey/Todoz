@@ -5,12 +5,12 @@ Joi.objectId = require("joi-objectid")(Joi);
 // Schema
 const schema = new mongoose.Schema({
     _user: {
-        type: mongoose.objectId,
+        type: mongoose.ObjectId,
         required: true,
         ref: "users"
     },
     _toDo: {
-        type: mongoose.objectId,
+        type: mongoose.ObjectId,
         ref: "toDos"
     },
     title: {
@@ -28,7 +28,7 @@ const schema = new mongoose.Schema({
         trim: true,
     },
     tags: {
-        type: String,
+        type: [String],
         maxlength: 10,
         trim: true
     },
@@ -39,16 +39,27 @@ const schema = new mongoose.Schema({
     updatedAt: {
         type: Date,
     },
+    status: {
+        type: String,
+        enum: ['to-do, in-progress, done'],
+        default: 'to-do'
+    }
 });
 
-module.exports.post = mongoose.model("posts", schema);
+module.exports.posts = mongoose.model('Post', schema);
 
 // Set Validation Schema
 const validationSchema = Joi.object().keys({
-    title: Joi.string().required().trim().min(7).max(64),
-    age: Joi.number()
-        .min(13)
+    _user: Joi.objectId().required(),
+    _toDo: Joi.objectId(),
+    title: Joi.string().required().trim().min(10).max(20),
+    body: Joi.string().required().trim().min(10).max(500),
+    tags: Joi.array(),
+    status: Joi.string().valid("to-do", "in-progress", "done"),
+    createdAt: Joi.date(),
+    updatedAt: Joi.date()
 });
+
 module.exports.validatePost = function (post) {
     return validationSchema.validate(post);
 };
