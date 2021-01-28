@@ -9,9 +9,9 @@ const schema = new mongoose.Schema({
         required: true,
         ref: "users"
     },
-    _toDo: {
+    _todo: {
         type: mongoose.ObjectId,
-        ref: "toDos"
+        ref: "todos"
     },
     title: {
         type: String,
@@ -51,7 +51,7 @@ module.exports.posts = mongoose.model('Post', schema);
 // Set Validation Schema
 const validationSchema = Joi.object().keys({
     _user: Joi.objectId().required(),
-    _toDo: Joi.objectId(),
+    _todo: Joi.objectId(),
     title: Joi.string().required().trim().min(10).max(20),
     body: Joi.string().required().trim().min(10).max(500),
     tags: Joi.array(),

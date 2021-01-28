@@ -1,5 +1,6 @@
 {
-    "name": "toDo",
+    "jwtKey": "todoKey",
+    "name": "ToDo",
     "host": "localhost",
     "port": "2919",
     "redis_local_host": "127.0.0.1"

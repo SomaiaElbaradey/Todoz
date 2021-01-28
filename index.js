@@ -1,11 +1,16 @@
 const express = require('express')
 const app = express()
+const config = require('config');
 
-require('./config/dbConnection');
+require('./dbConnection');
 const todoRouter = require('./routers/todo');
 const postRouter = require('./routers/post');
 const userRouter = require('./routers/user');
 
+if(!config.get('jwtKey')){
+    console.log("FATAL ERROR: jwtKey is not defined.")
+    process.exit(1);
+} 
 app.use(express.static('public'));
 app.use(express.json());
 //middleware that logs the request url, method, and current time 
