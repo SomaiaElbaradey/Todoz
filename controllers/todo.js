@@ -2,7 +2,7 @@ const { todos, validateTodo } = require('../models/todo')
 const { posts } = require('../models/post')
 const { validateUpdateTodo } = require('../helpers/todoValidator')
 
-module.exports.addTodo = async (req, res) => {
+module.exports.addTodo = async function (req, res) {
     req.body._user = req.user._id;
     //validation
     const { error } = validateTodo(req.body);
@@ -19,7 +19,7 @@ module.exports.addTodo = async (req, res) => {
 }
 
 //delete one's group
-module.exports.deleteTodo = async (req, res) => {
+module.exports.deleteTodo = async function (req, res) {
 
     //validate the required group
     const todo = await todos.findById({ _id: req.params.id });
@@ -33,7 +33,7 @@ module.exports.deleteTodo = async (req, res) => {
 }
 
 //edit group
-module.exports.updateTodo = async (req, res) => {
+module.exports.updateTodo = async function (req, res) {
 
     //check validation
     const todo = await todos.findById({ _id: req.params.id });

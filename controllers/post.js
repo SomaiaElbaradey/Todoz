@@ -3,7 +3,7 @@ const { validateUpdatePost } = require('../helpers/postValidator');
 const { todos } = require('../models/todo')
 
 //add one todo post
-module.exports.addPost = async (req, res) => {
+module.exports.addPost = async function (req, res) {
     req.body._user = req.user._id;
     //validation
     const { error } = validatePost(req.body);
@@ -24,13 +24,13 @@ module.exports.addPost = async (req, res) => {
 }
 
 //get all for one user
-module.exports.getPosts = async (req, res) => {
+module.exports.getPosts = async function (req, res) {
     const myPosts = await posts.find({ _user: req.user._id });
     res.send(myPosts);
 }
 
 //edit todo
-module.exports.updatePost = async (req, res) => {
+module.exports.updatePost = async function (req, res) {
 
     //check validation
     const post = await posts.findById({ _id: req.params.id });
@@ -54,7 +54,7 @@ module.exports.updatePost = async (req, res) => {
 }
 
 //delete todo
-module.exports.deletePost = async (req, res) => {
+module.exports.deletePost = async function (req, res) {
     //checkin the validation
     const post = await posts.findById({ _id: req.params.id });
     if (!post) return res.status(404).send('failed to find the todo.');
@@ -64,7 +64,7 @@ module.exports.deletePost = async (req, res) => {
 }
 
 //Return the todos with specified required filters (defaults are limit 10 skip 0 )
-module.exports.todosFilter = async (req, res) => {
+module.exports.todosFilter = async function (req, res) {
     let limit = parseInt(req.query.limit || 10);
     let skip = parseInt(req.query.skip || 0);
 

@@ -2,7 +2,7 @@ const { users, validateUser, validateUserLogin } = require("../models/user");
 const bcrypt = require("bcryptjs");
 const { validateUpdateMe } = require('../helpers/updateValidator')
 
-module.exports.userLogin = async (req, res) => {
+module.exports.userLogin = async function (req, res) {
 
     //Checkin if the email exists
     let user = await users.findOne({ mail: req.body.mail });
@@ -20,7 +20,7 @@ module.exports.userLogin = async (req, res) => {
     res.send(webToken);
 };
 
-module.exports.userRegister = async (req, res) => {
+module.exports.userRegister = async function (req, res) {
 
     //Validate the data of user
     const { error } = validateUser(req.body);
@@ -55,20 +55,20 @@ module.exports.userRegister = async (req, res) => {
 }
 
 //get users 
-module.exports.getAll = async (req, res) => {
+module.exports.getAll = async function (req, res) {
     const allUsers = await users.find({}, { _id: 0, firstName: 1 });
     res.send(allUsers);
 }
 
 //delete me 
-module.exports.deleteMe = async (req, res) => {
+module.exports.deleteMe = async function (req, res) {
     const user = await users.deleteOne({ _id: req.user._id });
     if (!user) return res.status(404).send('the user with given id not existed.');
     res.send(user);
 }
 
 //update me 
-module.exports.updateMe = async (req, res) => {
+module.exports.updateMe = async function (req, res) {
 
     // Validate update reuest
     const { error, value } = validateUpdateMe(req.body);
