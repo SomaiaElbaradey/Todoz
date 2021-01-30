@@ -34,14 +34,14 @@ const schema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now,
+        default: new Date(),
     },
     updatedAt: {
         type: Date,
     },
     status: {
         type: String,
-        enum: ['to-do, in-progress, done'],
+        enum: ['to-do', 'in-progress', 'done'],
         default: 'to-do'
     }
 });

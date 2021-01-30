@@ -1,6 +1,8 @@
+require('express-async-errors') 
 const express = require('express')
 const app = express()
 const config = require('config');
+const error = require('./middlewares/error');
 
 require('./dbConnection');
 const todoRouter = require('./routers/todo');
@@ -11,6 +13,7 @@ if(!config.get('jwtKey')){
     console.log("FATAL ERROR: jwtKey is not defined.")
     process.exit(1);
 } 
+
 app.use(express.static('public'));
 app.use(express.json());
 //middleware that logs the request url, method, and current time 
@@ -26,6 +29,9 @@ app.use('/api/todo', todoRouter);
 app.use('/api/post', postRouter);
 app.use('/api/user', userRouter);
 
+app.use(error);
+
 app.listen(process.env.PORT || 2919, () => {
     console.info(`server listening on port 2919`);
 });
+

@@ -63,8 +63,8 @@ function validateUser(user) {
     const schema = Joi.object({
         mail: Joi.string().email().required().trim().lowercase().min(6).max(64),
         userName: Joi.string().required().trim().min(7).max(64),
-        firstName: Joi.string().min(3).max(15),
-        password: Joi.string()
+        firstName: Joi.string().min(3).max(15).trim(),
+        password: Joi.string().required()
             .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z]).{8,}$')),
         age: Joi.number().min(13),
     });
