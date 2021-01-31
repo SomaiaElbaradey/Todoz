@@ -65,7 +65,10 @@ function validateUser(user) {
         userName: Joi.string().required().trim().min(7).max(64),
         firstName: Joi.string().min(3).max(15).trim(),
         password: Joi.string().required()
-            .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z]).{8,}$')),
+            .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z]).{8,}$'))
+            .messages({
+                "string.pattern.base": "your password must have at least 1 upper case letter, 1 special character, 1 small case letter"
+            }),
         age: Joi.number().min(13),
     });
 

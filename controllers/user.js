@@ -51,7 +51,7 @@ module.exports.userRegister = async function (req, res) {
 
     const token = new_user.generateToken("96h");
     //send the id to the user
-    res.header("x-login-token", token).send({ _id: new_user._id });
+    res.header("x-login-token", token).send({message: "user was registered successfully"});
 }
 
 //get users 
