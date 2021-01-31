@@ -1,6 +1,6 @@
-require('express-async-errors') 
-const express = require('express')
-const app = express()
+require('express-async-errors');
+const express = require('express');
+const app = express();
 const config = require('config');
 const error = require('./middlewares/error');
 
@@ -34,4 +34,3 @@ app.use(error);
 app.listen(process.env.PORT || 2919, () => {
     console.info(`server listening on port 2919`);
 });
-
