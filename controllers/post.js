@@ -25,7 +25,7 @@ module.exports.addPost = async function (req, res) {
 
 //get all for one user
 module.exports.getPosts = async function (req, res) {
-    const myPosts = await posts.find({ _user: req.user._id });
+    const myPosts = await posts.find({ _user: req.user._id }, { _id: 0, _user: 0 });
     res.send(myPosts);
 }
 

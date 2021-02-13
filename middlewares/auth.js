@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
     try {
         req.user = jwt.verify(token, config.get('jwtKey'));
     } catch (error) {
-        console.error(err);
+        console.error(error);
         res.status(400);
         res.json({ success: false, message: "Invalid token." });
     }

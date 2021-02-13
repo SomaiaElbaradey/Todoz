@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
     groupTitle: {
         type: String,
         required: true,
-        minlength: 10,
+        minlength: 3,
         maxlength: 20,
     },
 });
@@ -21,7 +21,7 @@ module.exports.todos = mongoose.model('Todo', schema);
 
 // Set Validation Schema
 const validationSchema = Joi.object().keys({
-    groupTitle: Joi.string().required().min(10).max(20),
+    groupTitle: Joi.string().required().min(3).max(20),
     _user: Joi.objectId().required(),
 });
 

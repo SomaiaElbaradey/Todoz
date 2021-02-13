@@ -32,7 +32,7 @@ module.exports.userRegister = async function (req, res) {
 
     //Checkin if the userName exists
     user = await users.findOne({ userName: req.body.userName });
-    if (user) return res.status(409).send("userName already exists.");
+    if (user) return res.status(409).send("username already exists.");
 
     //save the user in Database
     let new_user = new users({
@@ -82,7 +82,7 @@ module.exports.updateMe = async function (req, res) {
     }
     if (request.userName) {
         const user = await users.findOne({ userName: req.body.userName });
-        if (user) return res.status(409).send("userName already exists.");
+        if (user) return res.status(409).send("username already exists.");
     }
     if (request.password) {
         const salt = await bcrypt.genSalt(10);

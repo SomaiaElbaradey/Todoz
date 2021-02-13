@@ -3,10 +3,14 @@ const todoRouter = new express.Router()
 const auth = require("../middlewares/auth");
 const idHandle = require("../middlewares/idHandle");
 
-const { addTodo, deleteTodo, updateTodo } = require('../controllers/todo')
+const { addTodo, deleteTodo, updateTodo, getPosts, getGroups, lastMonthTodos, todosAtMonth } = require('../controllers/todo')
 
 todoRouter.post('/todosGroup', auth, addTodo);
 todoRouter.delete('/todosGroup/:id', [auth, idHandle], deleteTodo);
-todoRouter.patch('/todosGroup/:id', [auth, idHandle], updateTodo)
+todoRouter.patch('/todosGroup/:id', [auth, idHandle], updateTodo);
+todoRouter.get('/todosGroup/:id', [auth, idHandle], getPosts);
+todoRouter.get('/todosGroup', [auth], getGroups);
+todoRouter.get('/lastTodos', [auth], lastMonthTodos);
+todoRouter.get('/lastTodos/:month', [auth], todosAtMonth);
 
 module.exports = todoRouter;
