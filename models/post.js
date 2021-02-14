@@ -17,7 +17,7 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        minlength: 10,
+        minlength: 3,
         maxlength: 20,
     },
     body: {
@@ -52,7 +52,7 @@ module.exports.posts = mongoose.model('Post', schema);
 const validationSchema = Joi.object().keys({
     _user: Joi.objectId().required(),
     _todo: Joi.objectId(),
-    title: Joi.string().required().trim().min(10).max(20),
+    title: Joi.string().required().trim().min(3).max(20),
     body: Joi.string().required().trim().min(10).max(500),
     tags: Joi.array(),
     status: Joi.string().valid("to-do", "in-progress", "done"),
