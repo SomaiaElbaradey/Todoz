@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const { validateUpdateMe } = require('../helpers/updateValidator')
 
 module.exports.userLogin = async function (req, res) {
-
+    
     //Checkin if the email exists
     let user = await users.findOne({ mail: req.body.mail });
     if (!user) return res.status(400).send("Invalid mail or password.");
