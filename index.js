@@ -8,11 +8,14 @@ require('./dbConnection');
 const todoRouter = require('./routers/todo');
 const postRouter = require('./routers/post');
 const userRouter = require('./routers/user');
+const cors = require('cors')
 
 if(!config.get('jwtKey')){
     console.log("FATAL ERROR: jwtKey is not defined.")
     process.exit(1);
 } 
+ 
+app.use(cors())
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
