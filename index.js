@@ -20,11 +20,11 @@ app.use(function (req, res, next) {
     next();
 });
 
-// app.use(express.static(__dirname + '/dist/todosFront'));
+app.use(express.static(__dirname + '/dist/todosFront'));
 
-// app.get('/*', function (req, res) {
-//     res.sendFile(path.join(__dirname + '/dist/todosFront/index.html'));
-// });
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname + '/dist/todosFront/index.html'));
+});
 
 app.use(express.json());
 //middleware that logs the request url, method, and current time 
