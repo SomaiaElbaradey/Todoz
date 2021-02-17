@@ -1,4 +1,4 @@
-const { todos, validateTodo } = require('./app/models/todo')
+const { todos, validateTodo } = require('../models/toDo')
 const { posts } = require('../models/post')
 const { validateUpdateTodo } = require('../helpers/todoValidator')
 

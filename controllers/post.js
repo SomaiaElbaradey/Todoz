@@ -1,6 +1,6 @@
 const { posts, validatePost } = require('../models/post')
 const { validateUpdatePost } = require('../helpers/postValidator');
-const { todos } = require('../models/todo')
+const { todos } = require('../models/toDo')
 
 //add one todo post
 module.exports.addPost = async function (req, res) {
