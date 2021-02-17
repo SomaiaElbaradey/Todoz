@@ -11,11 +11,13 @@ const postRouter = require('./routers/post');
 const userRouter = require('./routers/user');
 const cors = require('cors')
 
-if(!config.get('jwtKey')){
+if (!config.get('jwtKey')) {
     console.log("FATAL ERROR: jwtKey is not defined.")
     process.exit(1);
-} 
- 
+}
+app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+
 app.use(cors())
 
 app.use(function (req, res, next) {
@@ -24,14 +26,8 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Methods", "*");
     next();
 });
-
 app.use(express.static(__dirname + '/dist/todosFront'));
 
-app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname + '/dist/todosFront/index.html'));
-});
-
-app.use(express.json());
 //middleware that logs the request url, method, and current time 
 let logs = (req, res, next) => {
     console.log('the request url:', req.url);
@@ -45,6 +41,9 @@ app.use('/api/todo', todoRouter);
 app.use('/api/post', postRouter);
 app.use('/api/user', userRouter);
 
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname + '/dist/todosFront/index.html'));
+});
 app.use(error);
 
 app.listen(process.env.PORT || 2919, () => {
