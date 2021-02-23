@@ -14,7 +14,7 @@ module.exports.userLogin = async function (req, res) {
     if (!validPassword) return res.status(400).send("Invalid mail or password.");
 
     //check mail verification 
-    if (user.isActive != true) res.status(216).send("Please verify your email to login.");
+    if (user.isActive != true) res.status(404).send("Please verify your email to login.");
 
     //Validate the data of user
     const { error } = validateUserLogin(req.body);
