@@ -114,5 +114,6 @@ module.exports.verify = async function (req, res) {
     }
     await users.findByIdAndUpdate(id, activate);
 
-    res.status(200).send("user was acctivated successfully");
+    res.status(200);
+    res.sendFile('views/activation.html', {root: __dirname });
 }
