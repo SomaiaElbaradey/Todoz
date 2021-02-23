@@ -1,9 +1,10 @@
 const { users, validateUser, validateUserLogin } = require("../models/user");
 const bcrypt = require("bcryptjs");
-const { validateUpdateMe } = require('../helpers/updateValidator')
+const { validateUpdateMe } = require('../helpers/updateValidator');
+const { sendMail } = require('../helpers/mail');
 
 module.exports.userLogin = async function (req, res) {
-    
+
     //Checkin if the email exists
     let user = await users.findOne({ mail: req.body.mail });
     if (!user) return res.status(400).send("Invalid mail or password.");
@@ -11,6 +12,9 @@ module.exports.userLogin = async function (req, res) {
     //Checkin if Password is correct
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).send("Invalid mail or password.");
+
+    //check mail verification 
+    if (user.isActive != true) res.status(216).send("Please verify your email to login.");
 
     //Validate the data of user
     const { error } = validateUserLogin(req.body);
@@ -50,8 +54,9 @@ module.exports.userRegister = async function (req, res) {
     await new_user.save();
 
     const token = new_user.generateToken("96h");
+    sendMail(new_user.mail, new_user.userName, new_user._id);
     //send the id to the user
-    res.header("x-login-token", token).send({message: "user was registered successfully"});
+    res.header("x-login-token", token).send({ message: "user was registered successfully" });
 }
 
 //get users 
@@ -92,4 +97,22 @@ module.exports.updateMe = async function (req, res) {
     await users.findByIdAndUpdate(req.user._id, request);
     res.status(200);
     res.json({ message: "user was edited successfully", user: request });
+}
+
+//verify user via mail
+module.exports.verify = async function (req, res) {
+
+    const { id } = req.params;
+
+    //Checkin if the user exists
+    let user = await users.findOne({ _id: id });
+    if (!user) return res.status(404).send("user doesn't exist.");
+
+    //change state if exist to be active
+    const activate = {
+        isActive: true
+    }
+    await users.findByIdAndUpdate(id, activate);
+
+    res.status(200).send("user was acctivated successfully");
 }

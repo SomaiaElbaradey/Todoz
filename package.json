@@ -22,6 +22,7 @@
     "joi-password-complexity": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.13",
+    "nodemailer": "^6.4.18",
     "winston": "^3.3.3"
   }
 }
