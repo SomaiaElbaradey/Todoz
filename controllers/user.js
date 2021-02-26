@@ -1,7 +1,8 @@
-const { users, validateUser, validateUserLogin } = require("../models/user");
+const { users, validateUser, validateUserLogin, validatePass } = require("../models/user");
 const bcrypt = require("bcryptjs");
 const { validateUpdateMe } = require('../helpers/updateValidator');
-const { sendMail } = require('../helpers/mail');
+const { sendActivationMail } = require('../helpers/activationMail');
+const { sendResetMail } = require('../helpers/resetPassMail');
 
 module.exports.userLogin = async function (req, res) {
 
@@ -54,7 +55,7 @@ module.exports.userRegister = async function (req, res) {
     await new_user.save();
 
     const token = new_user.generateToken("96h");
-    sendMail(new_user.mail, new_user.userName, new_user._id);
+    sendActivationMail(new_user.mail, new_user.userName, new_user._id);
     //send the id to the user
     res.header("x-login-token", token).send({ message: "user was registered successfully" });
 }
@@ -115,5 +116,42 @@ module.exports.verify = async function (req, res) {
     await users.findByIdAndUpdate(id, activate);
 
     res.status(200);
-    res.sendFile('views/activation.html', {root: __dirname });
+    res.sendFile('views/activation.html', { root: __dirname });
+}
+
+//reset password
+module.exports.resetPassword = async function (req, res) {
+
+    // Validate new password
+    const { error, value } = validatePass(req.body);
+    if (error) return res.status(404).send(error.details[0].message);
+    let newPassword = value.newPassword;
+
+    // update the new password with the reseted password
+    const user = await users.findOne({ mail: req.body.mail.toLowerCase() });
+    if (!user) return res.status(400).send("Invalid mail.");
+
+    // hash the new passsword
+    const salt = await bcrypt.genSalt(10);
+    newPassword = await bcrypt.hash(newPassword, salt);
+
+    await users.findByIdAndUpdate(user._id, { newPassword });
+
+    sendResetMail(user.mail, user._id);
+    res.status(200).send("Check your mail to confirm your new password.");
+}
+
+//confirm reseted password
+module.exports.confirmPassword = async function (req, res) {
+    //find the user
+    let user = await users.findById(req.params.id);
+    if (!user) return res.status(404).send("user doesn't exist.");
+    //update the new password to the user
+    let value = {
+        password: user.newPassword,
+    }
+    await users.findByIdAndUpdate(user._id, value);
+
+    res.status(200);
+    res.sendFile('views/resetedPassword.html', { root: __dirname });
 }

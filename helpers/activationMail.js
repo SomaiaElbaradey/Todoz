@@ -2,7 +2,7 @@
 const nodemailer = require("nodemailer");
 const path = require('path');
 
-module.exports.sendMail = async function (userMail, username, userId) {
+module.exports.sendActivationMail = async function (userMail, username, userId) {
     try {
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -31,7 +31,7 @@ module.exports.sendMail = async function (userMail, username, userId) {
                             email address: ${userMail}</h3>
                         <div>
                          <a none;" href="https://todozz.herokuapp.com/api/user/verify/${userId}">
-                         <button id="verfication" value=${userId} style="height: 30px; background-color: #44c1c1c7; 
+                         <button style="height: 30px; background-color: #44c1c1c7; 
                          border: none; border-radius: 5%; margin: 10px; cursor: pointer;"> Verify your mail address</button><br>
                          </a>
                         </div>

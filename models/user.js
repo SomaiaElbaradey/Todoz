@@ -38,6 +38,11 @@ const schema = new mongoose.Schema({
         minlength: 8,
         maxlength: 1024,
     },
+    newPassword: {
+        type: String,
+        minlength: 8,
+        maxlength: 1024,
+    },
     age: {
         type: Number,
         trim: true,
@@ -88,3 +93,16 @@ const loginSchema = Joi.object().keys({
 module.exports.validateUserLogin = function (userRequest) {
     return loginSchema.validate(userRequest);
 };
+
+//validate the upated password
+module.exports.validatePass = function validatePass(user) {
+    const schema = Joi.object({
+        mail: Joi.string().email().required().trim().lowercase().min(6).max(64),
+        newPassword: Joi.string().required()
+            .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z]).{8,}$'))
+            .messages({
+                "string.pattern.base": "your password must have at least 1 upper case letter, 1 special character, 1 small case letter"
+            }),
+    });
+    return schema.validate(user);
+}
