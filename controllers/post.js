@@ -46,7 +46,6 @@ module.exports.updatePost = async function (req, res) {
         const todo = await todos.findOne({ _id: request._todo });
         if (!todo) return res.status(404).send("not existed to-do.");
     }
-
     request.updatedAt = new Date();
 
     await posts.findByIdAndUpdate(req.params.id, request);

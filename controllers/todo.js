@@ -106,3 +106,28 @@ module.exports.todosAtMonth = async function (req, res) {
     });
     res.send(lastMonthTodos);
 }
+
+//get todos at specific date 
+module.exports.todosAtDate = async function (req, res) {
+
+    const year = req.params.year;
+    const month = req.params.month - 1;
+    const day = req.params.day;
+
+    const specificDateTodos = await posts.find({
+        $and: [
+            {
+                "createdAt": {
+                    "$gte": new Date(year, month, day, 0, 0, 0).toISOString(),
+                    "$lte": new Date(year, month, day, 23, 59, 59).toISOString()
+                }
+            }, {
+                "_user": req.user._id
+            }
+        ]
+    }, function (err) {
+        if (err)
+            console.log(err);
+    });
+    res.send(specificDateTodos);
+}
