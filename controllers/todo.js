@@ -131,3 +131,17 @@ module.exports.todosAtDate = async function (req, res) {
     });
     res.send(specificDateTodos);
 }
+
+//get todos by status
+module.exports.todosSpecificStatus = async function (req, res) {
+
+    const { status } = req.params;
+
+    const todosSpecificStatus = await posts.find({
+        $and: [{ "status": status }, { "_user": req.user._id }]
+    }, function (err) {
+        if (err)
+            console.log(err);
+    });
+    res.send(todosSpecificStatus);
+}

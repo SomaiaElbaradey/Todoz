@@ -14,7 +14,7 @@ module.exports.addPost = async function (req, res) {
         _user: req.user._id,
         _todo: req.body._todo,
         title: req.body.title,
-        status: req.body.staus,
+        status: req.body.status,
         body: req.body.body,
         tags: req.body.tags,
         createdAt: new Date()
