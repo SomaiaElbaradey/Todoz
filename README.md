@@ -76,10 +76,10 @@ Before you start, make sure you have <a href="https://nodejs.org/en/download/">N
 <img src="https://i.ibb.co/FbgSch3/2.jpg" width="543" height="267" alt="ScreenShoot">
 <img src="https://i.ibb.co/pnVvK0T/3.jpg" width="543" height="267" alt="ScreenShoot">
 <img src="https://i.ibb.co/s1fg462/4.jpg" width="543" height="267" alt="ScreenShoot">
-<img src="https://i.ibb.co/bvV18Yn/5.jpg" width="543" height="267" alt="ScreenShoot">
+<img src="https://i.ibb.co/71LtTg8/5.jpg" width="543" height="267" alt="ScreenShoot">
 
 ## Deployment
-The app deployed at: <a href="https://todozz.herokuapp.com/"> Todoz </a>
+The app deployed at:<a href="https://todozz.herokuapp.com/"> Todoz </a>
 
 ## Front End 
 Front-end repo: <a href="https://github.com/SomaiaElbaradey/todozFront">Todoz Front</a> 
