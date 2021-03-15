@@ -27,6 +27,9 @@ module.exports.addPost = async function (req, res) {
 //get all for one user
 module.exports.getPosts = async function (req, res) {
     const myPosts = await posts.find({ _user: req.user._id }, { });
+    myPosts.forEach((element) => {
+        if(element.updatedAt) element.createdAt = element.updatedAt;
+    });
     res.send(myPosts);
 }
 
