@@ -46,6 +46,7 @@ module.exports.userRegister = async function (req, res) {
         password: req.body.password,
         userName: req.body.userName,
         age: req.body.age,
+        isActive: true
     });
 
     //add salt before the hashed password, then hash it.
